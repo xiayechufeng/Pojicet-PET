@@ -53,7 +53,6 @@ dependencies {
     kapt 'com.jakewharton:butterknife-compiler:10.2.3'
     implementation 'com.github.xuexiangjys:XUI:1.1.7'
     implementation 'com.github.jdsjlzx:LRecyclerView:1.5.4.3'
-
-
+    compile 'com.github.mcxtzhang:SwipeDelMenuLayout:V1.2.1'
 
 }

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mcxtzhang.swipemenulib.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    app:ios="true"
+    app:leftSwipe="true"
+    android:layout_margin="@dimen/dp_4"
+    >
 
     <com.xuexiang.xui.widget.imageview.RadiusImageView
         android:id="@+id/item_image"
@@ -16,5 +20,14 @@
         android:layout_margin="5dp"
         android:transitionName="petImage"
        />
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        android:id="@+id/delete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rb_backgroundColor="@color/xui_config_color_red"
+        app:rb_radius="@dimen/dp_10"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/dp_22"/>
 
-</LinearLayout>
+</com.mcxtzhang.swipemenulib.SwipeMenuLayout>

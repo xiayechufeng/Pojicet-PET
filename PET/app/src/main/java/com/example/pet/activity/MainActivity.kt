@@ -3,15 +3,15 @@ package com.example.pet.activity
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
-import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ImageView
+import android.widget.PopupWindow
 import android.widget.Toast
-import androidx.core.graphics.drawable.toBitmap
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import butterknife.BindView
@@ -19,8 +19,11 @@ import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.example.pet.R
 import com.example.pet.baseclass.Pet
-import com.xuexiang.xui.widget.imageview.RadiusImageView
-import java.io.ByteArrayOutputStream
+import com.xuexiang.xui.adapter.simple.XUISimpleAdapter
+import com.xuexiang.xui.utils.DensityUtils
+import com.xuexiang.xui.widget.button.roundbutton.RoundButton
+import com.xuexiang.xui.widget.popupwindow.popup.XUIListPopup
+import com.xuexiang.xui.widget.popupwindow.popup.XUIPopup
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,7 +33,6 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.recyclerview)
     lateinit var recyclerView: RecyclerView
 
-
     var unbinder : Unbinder? = null
 
     private val petList = ArrayList<Pet>()
@@ -38,10 +40,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
-
         unbinder = ButterKnife.bind(this)
+
 
         initPet()
         val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
@@ -59,27 +59,22 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this@MainActivity,PetShowPage::class.java)
                 val shareView = (recyclerView.layoutManager as StaggeredGridLayoutManager).findViewByPosition(position)
                 val option = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity,shareView,"petImage")
-
-                val bitmap : Bitmap? = shareView?.findViewById<RadiusImageView>(R.id.item_image)?.drawable?.toBitmap()
-
-                intent.putExtra("bitmap",bitmap)
-
+                intent.putExtra("image",petList[position].ImageID)
                 startActivity(intent,option.toBundle())
+                
             }
 
             override fun onItemLongClick(view: View, position: Int) {
                 Toast.makeText(applicationContext,"长按",Toast.LENGTH_SHORT).show()
                 // TODO: 2021/8/3  加入长按点击事件
+
             }
         })
 
+
+
     }
 
-    private fun Bitmap2Byte(bitmap : Bitmap?) : ByteArray{
-        val baos = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.PNG,100,baos)
-        return baos.toByteArray()
-    }
 
     //初始化宠物界面（连接数据库）
     private fun initPet(){
@@ -111,6 +106,8 @@ class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHo
 
     inner class ViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val petImage : ImageView = view.findViewById(R.id.item_image)
+        val roundButton:RoundButton = view.findViewById(R.id.delete)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -122,6 +119,9 @@ class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHo
 
         val pet = petList[position]
         holder.petImage.setImageResource(pet.ImageID)
+        holder.roundButton.setOnClickListener {
+            // TODO: 2021/8/3 添加删除操作 
+        }
         holder.petImage.setOnClickListener {
             onItemClickListener.onItemClick(holder.itemView,position)
         }

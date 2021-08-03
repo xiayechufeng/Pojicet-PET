@@ -1,11 +1,7 @@
 package com.example.pet.activity
 
-import android.content.res.Resources
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.appcompat.app.ActionBar
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.pet.R
@@ -13,7 +9,7 @@ import com.xuexiang.xui.widget.imageview.RadiusImageView
 
 class PetShowPage : AppCompatActivity() {
 
-    @BindView(R.id.pet_image) lateinit var pet_image : RadiusImageView
+    @BindView(R.id.pet_image) lateinit var petImage : RadiusImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +18,16 @@ class PetShowPage : AppCompatActivity() {
         val actionBar = actionBar
         val intent = intent
 
-        intent.getParcelableExtra<Bitmap>("bitmap")
 
-        if (actionBar !== null){
-            actionBar.setTitle(R.string.app_name)
-        }
 
+        // TODO: 2021/8/3 传输方式修改 ,MainActivity也要相应修改
+        val imageId = intent.getIntExtra("image",0)
+        petImage.setImageResource(imageId)
+
+    }
+
+    override fun onDestroy() {
+        finish()
+        super.onDestroy()
     }
 }
