@@ -1,14 +1,17 @@
 package com.example.pet.activity
 
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
+import android.content.Intent
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import butterknife.BindView
@@ -16,8 +19,8 @@ import butterknife.ButterKnife
 import butterknife.Unbinder
 import com.example.pet.R
 import com.example.pet.baseclass.Pet
-import com.github.jdsjlzx.interfaces.OnItemClickListener
-import com.xuexiang.xui.adapter.recyclerview.RecyclerViewHolder
+import com.xuexiang.xui.widget.imageview.RadiusImageView
+import java.io.ByteArrayOutputStream
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,26 +38,50 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
         unbinder = ButterKnife.bind(this)
 
         initPet()
         val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-//        recyclerView.layoutManager = layoutManager
         recyclerView.layoutManager = layoutManager
         val adapter = PetAdapter(petList)
         recyclerView.adapter = adapter
+        //recyclerview点击事件绑定
         adapter.setOnItemClickListener(object : PetAdapter.OnItemClickListener{
+            @SuppressLint("CutPasteId")
             override fun onItemClick(view: View, position: Int) {
-                Toast.makeText(applicationContext,"aaa",Toast.LENGTH_SHORT).show()
+
+                Toast.makeText(applicationContext,"点击",Toast.LENGTH_SHORT).show()
+                // TODO: 2021/8/3  加入点击事件
+                //点击动画
+                val intent = Intent(this@MainActivity,PetShowPage::class.java)
+                val shareView = (recyclerView.layoutManager as StaggeredGridLayoutManager).findViewByPosition(position)
+                val option = ActivityOptions.makeSceneTransitionAnimation(this@MainActivity,shareView,"petImage")
+
+                val bitmap : Bitmap? = shareView?.findViewById<RadiusImageView>(R.id.item_image)?.drawable?.toBitmap()
+
+                intent.putExtra("bitmap",bitmap)
+
+                startActivity(intent,option.toBundle())
             }
 
             override fun onItemLongClick(view: View, position: Int) {
-                Toast.makeText(applicationContext,"aaa",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,"长按",Toast.LENGTH_SHORT).show()
+                // TODO: 2021/8/3  加入长按点击事件
             }
         })
 
     }
 
+    private fun Bitmap2Byte(bitmap : Bitmap?) : ByteArray{
+        val baos = ByteArrayOutputStream()
+        bitmap?.compress(Bitmap.CompressFormat.PNG,100,baos)
+        return baos.toByteArray()
+    }
+
+    //初始化宠物界面（连接数据库）
     private fun initPet(){
         petList.add(Pet("aaa",1, R.drawable.interlude_anniversary2))
         petList.add(Pet("aaa",1, R.drawable.ic_launcher_background))
@@ -64,6 +91,7 @@ class MainActivity : AppCompatActivity() {
         petList.add(Pet("aaa",1, R.drawable.ic_launcher_background))
         petList.add(Pet("aaa",1, R.drawable.interlude_anniversary2))
         petList.add(Pet("aaa",1, R.drawable.ic_launcher_background))
+        // TODO: 2021/8/3 连接数据库
     }
 
     override fun onDestroy() {
@@ -73,6 +101,10 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+
+/**
+ * recyclerview 加载器
+ */
 class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHolder>(){
 
     private lateinit var onItemClickListener : OnItemClickListener
@@ -92,6 +124,10 @@ class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHo
         holder.petImage.setImageResource(pet.ImageID)
         holder.petImage.setOnClickListener {
             onItemClickListener.onItemClick(holder.itemView,position)
+        }
+        holder.petImage.setOnLongClickListener{
+            onItemClickListener.onItemLongClick(holder.itemView,position)
+            true
         }
 
     }

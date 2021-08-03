@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.PetShowPage"
+    android:orientation="vertical">
+
+    <com.xuexiang.xui.widget.imageview.RadiusImageView
+        android:id="@+id/pet_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/interlude_anniversary2"
+        android:transitionName="petImage" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+<!--        <TextView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="PetName"-->
+<!--            android:textSize="@dimen/dp_36"-->
+<!--            android:gravity="center"-->
+<!--            />-->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="back"
+            android:id="@+id/back"
+            />
+<!--    加入宠物数据    -->
+
+    </ScrollView>
+
+
+</LinearLayout>
