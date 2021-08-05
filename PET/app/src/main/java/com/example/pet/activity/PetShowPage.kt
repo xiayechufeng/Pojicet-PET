@@ -2,9 +2,11 @@ package com.example.pet.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.animation.Animation
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.example.pet.R
+import com.xuexiang.xui.utils.ViewUtils
 import com.xuexiang.xui.widget.imageview.RadiusImageView
 
 class PetShowPage : AppCompatActivity() {
@@ -17,7 +19,6 @@ class PetShowPage : AppCompatActivity() {
         ButterKnife.bind(this)
         val actionBar = actionBar
         val intent = intent
-
 
 
         // TODO: 2021/8/3 传输方式修改 ,MainActivity也要相应修改

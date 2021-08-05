@@ -49,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = PetAdapter(petList)
         recyclerView.adapter = adapter
         //recyclerview点击事件绑定
+        adapter.notifyItemRangeChanged(2,petList.size-2)
         adapter.setOnItemClickListener(object : PetAdapter.OnItemClickListener{
             @SuppressLint("CutPasteId")
             override fun onItemClick(view: View, position: Int) {
@@ -100,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 /**
  * recyclerview 加载器
  */
-class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHolder>(){
+class PetAdapter(val petList:ArrayList<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHolder>(){
 
     private lateinit var onItemClickListener : OnItemClickListener
 
@@ -119,9 +120,15 @@ class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHo
 
         val pet = petList[position]
         holder.petImage.setImageResource(pet.ImageID)
+
         holder.roundButton.setOnClickListener {
-            // TODO: 2021/8/3 添加删除操作 
+            if (petList.size <= 1){
+                Toast.makeText(holder.roundButton.context,"不能删除了",Toast.LENGTH_SHORT).show()
+            }else{
+                remove(position)
+            }
         }
+
         holder.petImage.setOnClickListener {
             onItemClickListener.onItemClick(holder.itemView,position)
         }
@@ -139,6 +146,12 @@ class PetAdapter(val petList:List<Pet>) : RecyclerView.Adapter<PetAdapter.ViewHo
     interface OnItemClickListener{
         fun onItemClick(view: View, position: Int)
         fun onItemLongClick(view: View, position: Int)
+    }
+
+    public fun remove(position: Int){
+        petList.removeAt(position)
+        notifyItemRemoved(position)
+
     }
 
 
