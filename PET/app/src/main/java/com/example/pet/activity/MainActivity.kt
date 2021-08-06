@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -33,16 +36,22 @@ class MainActivity : AppCompatActivity() {
     @BindView(R.id.recyclerview)
     lateinit var recyclerView: RecyclerView
 
+    @BindView(R.id.swipe)
+    lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
     var unbinder : Unbinder? = null
 
     private val petList = ArrayList<Pet>()
 
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         unbinder = ButterKnife.bind(this)
 
 
+
+        //recyclerView 的实现，瀑布布局的实现
         initPet()
         val layoutManager = StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
@@ -71,6 +80,17 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+
+
+        //下拉刷新设置
+
+        swipeRefreshLayout.setColorSchemeResources(R.color.xui_config_color_dark_blue_gray)
+        swipeRefreshLayout.setOnRefreshListener {
+            adapter.addItem(position = 8)
+            swipeRefreshLayout.isRefreshing = false
+        }
+
+
 
 
 
@@ -152,6 +172,11 @@ class PetAdapter(val petList:ArrayList<Pet>) : RecyclerView.Adapter<PetAdapter.V
         petList.removeAt(position)
         notifyItemRemoved(position)
 
+    }
+
+    public fun addItem(position: Int){
+        petList.add(position, Pet("aaa",1, R.drawable.interlude_anniversary2))
+        notifyItemInserted(position)
     }
 
 
