@@ -21,14 +21,14 @@
         android:layout_margin="5dp"
         android:transitionName="petImage"
        />
-    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
-        android:id="@+id/delete"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:rb_backgroundColor="@color/xui_config_color_red"
-        app:rb_radius="@dimen/dp_10"
-        android:text="删除"
-        android:textColor="@color/white"
-        android:textSize="@dimen/dp_22"/>
+<!--    <com.xuexiang.xui.widget.button.roundbutton.RoundButton-->
+<!--        android:id="@+id/delete"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:rb_backgroundColor="@color/xui_config_color_red"-->
+<!--        app:rb_radius="@dimen/dp_10"-->
+<!--        android:text="删除"-->
+<!--        android:textColor="@color/white"-->
+<!--        android:textSize="@dimen/dp_22"/>-->
 
 </com.mcxtzhang.swipemenulib.SwipeMenuLayout>
